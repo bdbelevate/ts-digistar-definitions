@@ -1,0 +1,9 @@
+build
+node_modules
+src/assets
+.DS_Store
+src/index.scss
+src/generated
+commitlint.config.js
+src/proto
+tailwind.config.js
