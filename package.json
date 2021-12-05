@@ -4,7 +4,7 @@
   "description": "This package has some libraries to help with Digistar development",
   "scripts": {
     "build": "yarn run tsc",
-    "prebuild": "yarn run lint",
+    "prebuild": "yarn run lint && rm -rf ./dist",
     "lint": "eslint . --ext .ts --ext .tsx && prettier --config .prettierrc 'src/**/*' --write --loglevel warn"
   },
   "dependencies": {

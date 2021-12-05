@@ -1,3 +1,4 @@
 *.config.js
 .eslint.js
 tailwind.config.js
+dist

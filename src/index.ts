@@ -1,3 +1,7 @@
-const pi = 3.14;
+const result = Ds.PopupMessage(
+  'An error has occurred. Continue processing?',
+  'Alert',
+  'YESNO'
+);
 
-console.log(pi * 4);
+if (result == Ds.PopupReturnValue.No) print('hello');
