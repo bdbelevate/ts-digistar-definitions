@@ -81,11 +81,11 @@ declare namespace Ds {
 
   /**
    * Use this command to display a pop-up message window and receive a reply.
-   * @param text - Use this command to display a pop-up message window and receive a reply.
-   * @param caption - is the pop-up window heading.
-   * @param type - is the pop-up window type
-   * @param icon - is the icon to display with the pop-up window
-   * @param setting - is an optional numeric value to 'or' with the type and icon settings to provide more options. Note that this in an implementation of the Windows MessageBox function. Please refer to the Microsoft C-language runtime API documentation for more details.
+   * @param text Use this command to display a pop-up message window and receive a reply.
+   * @param caption is the pop-up window heading.
+   * @param type is the pop-up window type
+   * @param icon is the icon to display with the pop-up window
+   * @param setting is an optional numeric value to 'or' with the type and icon settings to provide more options. Note that this in an implementation of the Windows MessageBox function. Please refer to the Microsoft C-language runtime API documentation for more details.
    */
   function PopupMessage(
     text: string,
@@ -166,9 +166,9 @@ declare namespace Ds {
    * A '\' character is used before '"' characters to allow embedding within a string of characters.
    *
    * If offset is not specified, it will default to 0.0 seconds.
-   * @param name - name is how the script will be identified to Digistar. It will be as though a script by the name has been played.
-   * @param buffer - buffer is the text of the script. Lines are separated with \r\n\t (return, new-line, and tab) control characters. Each line may begin with an optional timecode preceding the \t character.
-   * @param offset - offset is a floating point value indicating the time in seconds before the script is to be played.
+   * @param name name is how the script will be identified to Digistar. It will be as though a script by the name has been played.
+   * @param buffer buffer is the text of the script. Lines are separated with \r\n\t (return, new-line, and tab) control characters. Each line may begin with an optional timecode preceding the \t character.
+   * @param offset offset is a floating point value indicating the time in seconds before the script is to be played.
    */
   function SendScriptCommands(
     name: string,
@@ -245,8 +245,8 @@ declare namespace Ds {
    * }
    * ```
    *
-   * @param timeInSeconds - is the time is seconds to wait.
-   * @param clock - specifies which clock to use for waiting
+   * @param timeInSeconds is the time is seconds to wait.
+   * @param clock specifies which clock to use for waiting
    */
   function Wait(timeInSeconds: number, clock: 'cpu' | 'system' | 'show'): void;
 
@@ -256,8 +256,8 @@ declare namespace Ds {
    * Almost always, Ds.Wait() is preferred over Ds.WaitNRT() because NRT callbacks from Digistar can sometimes be missing or delayed. Ds.WaitNRT() was included for completeness but is rarely used.
    *
    * Note: Digistar processes with two main threads of execution - a real-time (RT) thread and a non-real-time (NRT) thread. The non-real-time thread handles activities that can tolerate delays. The real-time thread is reserved for processes that are essential in updating the system in a smooth and consistent manner.
-   * @param timeInSeconds - is the time is seconds to wait.
-   * @param clock - specifies which clock to use for waiting
+   * @param timeInSeconds is the time is seconds to wait.
+   * @param clock specifies which clock to use for waiting
    */
   function WaitNRT(
     timeInSeconds: number,
@@ -324,7 +324,7 @@ declare namespace Ds {
    *
    * @param object
    * @param objectClass
-   * @param type - if not specified, the type will be the default object type for the given class. If not specified for a class, the type will default to "temporary".
+   * @param type if not specified, the type will be the default object type for the given class. If not specified for a class, the type will default to "temporary".
    */
   function CreateObject(
     name: string,
@@ -335,9 +335,9 @@ declare namespace Ds {
   /**
    * Clones a Digistar object.
    *
-   * @param newName - is the name of the Digistar object to create
-   * @param nameToClone - is the name of an existing object to clone
-   * @param type - if not specified, the type will be the default object type for the given class. If not specified for a class, the type will default to "temporary".
+   * @param newName is the name of the Digistar object to create
+   * @param nameToClone is the name of an existing object to clone
+   * @param type if not specified, the type will be the default object type for the given class. If not specified for a class, the type will default to "temporary".
    */
   function CloneObject(
     newName: string,
@@ -352,9 +352,9 @@ declare namespace Ds {
    * To allocate an array, call Ds.AllocObjectArray() with the Digistar object name,
    * the attribute name, and the maximum size of the array.
    *
-   * @param name - is the name of a Digistar object that has already been created
-   * @param attributeName - is the name of an attribute of the object
-   * @param count - is the number of array elements to allocate
+   * @param name is the name of a Digistar object that has already been created
+   * @param attributeName is the name of an attribute of the object
+   * @param count is the number of array elements to allocate
    */
   function AllocObjectArray(
     name: string,
@@ -370,9 +370,9 @@ declare namespace Ds {
    * call Ds.ResizeObjectArray() with the Digistar object name, the attribute name,
    * and the new maximum size of the array.
    *
-   * @param name - is the name of a Digistar object that has already been created
-   * @param attributeName - is the name of an attribute of the object
-   * @param count - is the number of array elements for the reallocation
+   * @param name is the name of a Digistar object that has already been created
+   * @param attributeName is the name of an attribute of the object
+   * @param count is the number of array elements for the reallocation
    */
   function ResizeObjectArray(
     name: string,
@@ -383,9 +383,261 @@ declare namespace Ds {
   /**
    * Deletes a Digistar object
    *
-   * @param name - is the name of the Digistar object to delete.
+   * @param name is the name of the Digistar object to delete.
    */
   function DeleteObject(name: string): void;
+
+  /**
+   * Returns an object's ID
+   *
+   * Note:
+   * Some objects defined by the system are not created until used and calling Ds.GetObjectID(object) will return -1 whereas Ds.GetObjectID(object,false) will return the pre-assigned object ID.
+   *
+   * Example:
+   * ```js
+   * // Create the ball (if needed)
+   * if (Ds.GetObjectID("ball") < 0) {
+   *   Ds.CreateObject("ball", "dotClass");
+   * }
+   * ballPositionReference = Ds.NewObjectAttrRef("ball", "position");
+   * ```
+   *
+   * @param name is the name of the Digistar object
+   * @param checkCreated an optional boolean (true/false) parameter indicating whether to check that a system object has been created. If omitted, the default is true and the returned value will be -1 if the object has not been created.
+   *
+   * @returns the ID number of the object if it exists or -1 if it does not exist (or not yet created in the case of pre-defined system objects). This command is useful in determining if an object needs to be created.
+   */
+  function GetObjectId(name: string, checkCreated?: boolean): number;
+
+  /**
+   * Returns a class ID
+   *
+   * @param className is the name of the Digistar class
+   * @param checkCreated an optional boolean (true/false) parameter indicating whether to check that a system object has been created. If omitted, the default is true and the returned value will be -1 if the object has not been created.
+   *
+   * @returns the ID number of the class used to create the object or -1 if it does not exist.
+   */
+  function GetObjectClassId(className: string, checkCreated?: boolean): number;
+
+  /**
+   * Used to get an object name from an object ID. If the object ID is not valid, null will be returned.
+   *
+   * @param objectID is the ID number of the object.
+   */
+  function GetObjectName(objectID: number): string | null;
+
+  /**
+   * Returns the number of array elements for an object attribute.
+   *
+   * @param objectID is the ID number of the object.
+   */
+  function GetObjectArraySize(objectID: number): number;
+
+  /**
+   * Returns the number of parents of object.
+   *
+   * @param objectID is the ID number of the object.
+   */
+  function GetObjectNumParents(objectID: number): number;
+
+  /**
+   * Returns an array of names of parents of object.
+   *
+   * @param objectID is the ID number of the object.
+   */
+  function GetObjectParentNames(objectID: number): string[];
+
+  /**
+   * Returns a single parent name of object referenced by the index.
+   *
+   * @param objectID is the ID number of the object.
+   * @param index the index in the array
+   */
+  function GetObjectParentNameUsingIndex(
+    objectID: number,
+    index: number
+  ): string;
+
+  /**
+   * Returns the number of children of object.
+   *
+   * @param objectID is the ID number of the object.
+   */
+  function GetObjectNumChildren(objectID: number): number;
+
+  /**
+   * Returns an array of names of children of object.
+   *
+   * @param objectID is the ID number of the object.
+   */
+  function GetObjectChildNames(objectID: number): string[];
+
+  /**
+   * Returns a single child name of object referenced by the index.
+   *
+   * @param objectID is the ID number of the object.
+   * @param index the index in the array
+   */
+  function GetObjectChildNameUsingIndex(
+    objectID: number,
+    index: number
+  ): string;
+
+  /**
+   * Adds a child object to a parent.
+   *
+   * @param parentName is the name of the parent object
+   * @param childName is the name of the child object to add under the parent hierarchy
+   */
+  function AddObjectChild(parentName: string, childName: string): void;
+
+  /**
+   * Adds a child object to a parent
+   *
+   * @param parentName is the name of the parent object
+   * @param childName is the name of the child object to add under the parent hierarchy
+   * @param beforeObjName is the name of the object to place the child after
+   */
+  function AddObjectChildBefore(
+    parentName: string,
+    childName: string,
+    beforeObjName: string
+  ): void;
+
+  /**
+   * Adds a child object to a parent.
+   *
+   * @param parentName is the name of the parent object
+   * @param childName is the name of the child object to add under the parent hierarchy
+   * @param beforeObjName is the name of the object to place the child before.
+   */
+  function AddObjectChildAfter(
+    parentName: string,
+    childName: string,
+    afterObjName: string
+  ): void;
+
+  /**
+   * Removes a child from a parent.
+   * @param parentName is the name of the parent object
+   * @param childName is the name of the child object to be removed from the parent hierarchy.
+   */
+  function RemoveObjectChild(parentName: string, childName: string): void;
+
+  /**
+   * Get the ID number of a class.
+   * @param className classID is the ID number of the class if it exists or -1 if it does not exist
+   */
+  function GetClassID(className: string): number;
+
+  /**
+   * Get the name of a class from an ID number. The return value is null if the class ID is invalid.
+   * @param classID the classID to find the name for
+   */
+  function GetClassName(classID: number): string | null;
+
+  /**
+   * Get the index number of an attribute.
+   * @param className the name of the class
+   * @param attrName the attribute name
+   */
+  function GetClassAttrIndex(className: string, attrName: string): number;
+
+  /**
+   * Get the index number of a command.
+   * @param className the name of the class
+   * @param commandName the command name
+   */
+  function GetClassCommandIndex(className: string, commandName: string): number;
+
+  /**
+   * Get the number of attributes defined by a class.
+   * @param className the name of the class
+   */
+  function GetClassNumAttrs(className: string): number;
+
+  /**
+   * Get an array containing all attribute names.
+   * @param className the name of the class
+   */
+  function GetClassAttrNames(className: string): string[];
+
+  /**
+   * Get an attribute name by index.
+   * @param className the name of the class
+   * @param index the array index
+   */
+  function GetClassAttrNameUsingIndex(className: string, index: number): string;
+
+  /**
+   * Get an array containing all attribute type names. A type name is something like
+   * (BOOL, VIDEO_PATHNAME, INT32, POSITION, or COLOR). If the attribute is an array,
+   * then the type name will be preceded by "ARRAY_OF_". For example, the type name
+   * of an array attribute of type INT32, would be ARRAY_OF_INT32.
+   * @param className the name of the class
+   */
+  function GetClassAttrTypeNames(className: string): string[];
+
+  /**
+   * Get an attribute type name by index.
+   * @param className the name of the class
+   * @param index the array index
+   */
+  function GetClassAttrTypeNameUsingIndex(
+    className: string,
+    index: number
+  ): string;
+
+  /**
+   * Get the name of an enum attribute.
+   * @param className the name of the class
+   * @param attrIndex the attribute index number
+   */
+  function GetClassAttrEnumName(className: string, attrIndex: number): string;
+
+  /**
+   * Get the number of commands defined by the class.
+   * @param className the name of the class
+   */
+  function GetClassNumCommands(className: string): number;
+
+  /**
+   * Get an array of command names defined by the class,
+   * @param className the name of the class
+   */
+  function GetClassCommandNames(className: string): string[];
+
+  /**
+   * Get an command name by index.
+   * @param className the name of the class
+   * @param index the array index
+   */
+  function GetClassCommandNameUsingIndex(
+    className: string,
+    index: number
+  ): string;
+
+  /**
+   * Returns the number of objects with the specified class name
+   * @param className the name of the class
+   */
+  function GetClassNumObjects(className: string): number;
+
+  /**
+   * Returns the names of the of objects with the specified class name
+   * @param className the name of the class
+   */
+  function GetClassObjectNames(className: string): string[];
+
+  /**
+   * Returns a single name at a specified index of objects with the specified class name
+   * @param className the name of the class
+   * * @param index the array index
+   */
+  function GetClassObjectNameUsingIndex(
+    className: string,
+    index: number
+  ): string;
 }
 
 /**
