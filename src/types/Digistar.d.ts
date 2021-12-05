@@ -639,6 +639,7 @@ declare namespace Ds {
     index: number
   ): string;
 
+  // TODO: figure out the type
   interface SceneClass {
     tbd: string;
   }
@@ -704,6 +705,11 @@ declare namespace Ds {
     objectName: string
   ): void;
 
+  // TODO: figure out the type
+  type DSController = {
+    tbd: string;
+  };
+
   /**
    * Sets the scene date to the current date and time.
    *
@@ -712,7 +718,7 @@ declare namespace Ds {
    */
   function SceneDateNow(
     sceneObject: SceneClass | null,
-    controller?: string | number
+    controller?: DSController
   ): void;
 
   /**
@@ -723,7 +729,7 @@ declare namespace Ds {
    */
   function SceneDateNow(
     sceneObject: SceneClass | null,
-    controller?: string | number
+    controller?: DSController
   ): void;
 
   /**
@@ -738,7 +744,7 @@ declare namespace Ds {
     sceneObject: SceneClass | null,
     hourOffset?: number,
     dayOffset?: number,
-    controller?: string | number
+    controller?: DSController
   ): void;
 
   /**
@@ -755,7 +761,7 @@ declare namespace Ds {
     offset?: number,
     offsetType?: 'hours' | 'degrees',
     dayOffset?: number,
-    controller?: string | number
+    controller?: DSController
   ): void;
 
   /**
@@ -772,7 +778,7 @@ declare namespace Ds {
     offset?: number,
     offsetType?: 'hours' | 'degrees',
     dayOffset?: number,
-    controller?: string | number
+    controller?: DSController
   ): void;
 
   /**
@@ -789,7 +795,7 @@ declare namespace Ds {
     offset?: number,
     offsetType?: 'hours' | 'degrees',
     dayOffset?: number,
-    controller?: string | number
+    controller?: DSController
   ): void;
 
   /**
@@ -814,7 +820,7 @@ declare namespace Ds {
     minute: number,
     second: number,
     local: boolean,
-    controller?: string | number
+    controller?: DSController
   ): void;
 
   /**
@@ -835,7 +841,7 @@ declare namespace Ds {
     day: number,
     offset?: number,
     offsetType?: 'hours' | 'degrees',
-    controller?: string | number
+    controller?: DSController
   ): void;
 
   /**
@@ -856,7 +862,7 @@ declare namespace Ds {
     day: number,
     offset?: number,
     offsetType?: 'hours' | 'degrees',
-    controller?: string | number
+    controller?: DSController
   ): void;
 
   /**
@@ -877,7 +883,7 @@ declare namespace Ds {
     day: number,
     offset?: number,
     offsetType?: 'hours' | 'degrees',
-    controller?: string | number
+    controller?: DSController
   ): void;
 
   /**
@@ -904,7 +910,7 @@ declare namespace Ds {
       | 'cyears'
       | 'years',
     relative?: boolean,
-    controller?: string | number
+    controller?: DSController
   );
 
   /**
@@ -929,7 +935,7 @@ declare namespace Ds {
       | 'syears'
       | 'cyears'
       | 'years',
-    controller?: string | number
+    controller?: DSController
   );
 
   /**
@@ -954,8 +960,257 @@ declare namespace Ds {
       | 'syears'
       | 'cyears'
       | 'years',
-    controller?: string | number
+    controller?: DSController
   );
+
+  /**
+   * Returns an enum item index given the item's name
+   * @param enumName is the enumeration type name
+   * @param itemName is the text name of the enumeration item
+   * @returns is the index of the enumeration item
+   */
+  function GetEnumItemIndex(enumName: string, itemName: string): number;
+
+  /**
+   * Returns the number of items for the enumeration
+   * @param enumName is the enumeration type name
+   */
+  function GetEnumNumItems(enumName: string): number;
+
+  /**
+   * Returns an array containing the enum item names
+   * @param enumName is the enumeration type name
+   */
+  function GetEnumItemNames(enumName: string): string[];
+
+  /**
+   * Returns a single enum item name for a specified index
+   * @param enumName is the enumeration type name
+   * @param index the array index
+   */
+  function GetEnumItemName(enumName: string, index: number): string;
+
+  interface DSObjectIdentifier {
+    objectID: number;
+    classID: number;
+  }
+
+  // TODO: figure out the type
+  type DSAttributeReference = {
+    tbd: string;
+  };
+
+  /**
+   * Returns a reference to an object's attribute.
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param attrName is the name of the object attribute or, if the attribute index is known, it can be the numeric value of the index.
+   */
+  function NewObjectAttrRef(
+    object: string | DSObjectIdentifier,
+    attrName
+  ): DSAttributeReference;
+
+  /**
+   * Returns the referenced object ID.
+   * @param ref the attribute reference
+   */
+  function GetAttrRefObjectID(ref: DSAttributeReference): number;
+
+  /**
+   * Returns the referenced attribute index.
+   * @param ref the attribute reference
+   */
+  function GetAttrRefIndex(ref: DSAttributeReference): number;
+
+  /**
+   * Returns the referenced object name.
+   * @param ref the attribute reference
+   */
+  function GetAttrRefObjectName(ref: DSAttributeReference): string;
+
+  /**
+   * Returns the name of the referenced attribute.
+   * @param ref the attribute reference
+   */
+  function GetAttrRefAttrName(ref: DSAttributeReference): string;
+
+  /**
+   * Deletes the object attribute reference.
+   * Note: Note that this command is not usually needed because the reference will automatically be deleted when it goes out of scope.
+   * @param ref the attribute reference
+   */
+  function DeleteObjectAttrRef(ref: DSAttributeReference): void;
+
+  /**
+   * Returns the value of an object's attribute by using a reference
+   *
+   * Note:
+   * You can either use the form Ds.GetObjectAttr(object, attribute) or Ds.GetObjectUsingRef(ref).
+   * Using a reference requires that you first obtain a reference with the Ds.NewObjectAttrRef()
+   * command. Using a reference is a little more efficient because JavaScript does not need to
+   * look up the object ID and attribute index before getting the attribute or array element.
+   *
+   * If you only get the attribute once or a few times in your script, then using a reference
+   * would be less efficient than calling Ds.GetObjectAttr(object, attribute). If you are going
+   * to access the attribute repeatedly, then it is recommended that you use a reference.
+   * @param ref the attribute reference
+   */
+  function GetObjectAttrUsingRef(ref: DSAttributeReference): any;
+
+  /**
+   * Returns the value of an object's attribute by using an object and the attrbute name
+   *
+   * Note: If you only get the attribute once or a few times in your script, then using a reference
+   * would be less efficient than calling Ds.GetObjectAttr(object, attribute). If you are going
+   * to access the attribute repeatedly, then it is recommended that you use a reference.
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param attrName the attribute name
+   */
+  function GetObjectAttr(
+    object: string | DSObjectIdentifier,
+    attrName: string
+  ): any;
+
+  /**
+   * Returns the value of an array element by using a reference
+   *
+   * Note:
+   * You can either use the form Ds.GetObjectAttr(object, attribute) or Ds.GetObjectUsingRef(ref).
+   * Using a reference requires that you first obtain a reference with the Ds.NewObjectAttrRef()
+   * command. Using a reference is a little more efficient because JavaScript does not need to
+   * look up the object ID and attribute index before getting the attribute or array element.
+   *
+   * If you only get the attribute once or a few times in your script, then using a reference
+   * would be less efficient than calling Ds.GetObjectAttr(object, attribute). If you are going
+   * to access the attribute repeatedly, then it is recommended that you use a reference.
+   * @param ref the attribute reference
+   * @param elemIndex the index of the array element
+   */
+  function GetObjectArrayElemUsingRef(
+    ref: DSAttributeReference,
+    elemIndex: number
+  ): any;
+
+  /**
+   * Returns a value from an array element by using an object and the attrbute name
+   *
+   * Note: If you only get the attribute once or a few times in your script, then using a reference
+   * would be less efficient than calling Ds.GetObjectAttr(object, attribute). If you are going
+   * to access the attribute repeatedly, then it is recommended that you use a reference.
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param attrName the attribute name
+   * @param elemIndex the index of the array element
+   */
+  function GetObjectArrayElem(
+    object: string | DSObjectIdentifier,
+    attrName: string,
+    elemIndex: number
+  ): any;
+
+  /**
+   * DSPosition is the multiple-component result (worldPos.x, worldPos.y, worldPos.z).
+   */
+  type DSPosition = {
+    x: number;
+    y: number;
+    z: number;
+  };
+
+  /**
+   * There are two special-purpose commands provided to get the world position of an object.
+   *
+   * @param object is the object to query. When using Ds.GetObjectWorldPositionWithOffset(), object should be a camera.
+   * @param isLeftHanded  optional parameter (default is false to match the handedness of Digistar) and is set to true if the result is to be returned in left-handed coordinates.
+   * @returns worldPos is the multiple-component result (worldPos.x, worldPos.y, worldPos.z).
+   */
+  function GetObjectWorldPosition(
+    object: string | DSObjectIdentifier,
+    isLeftHanded?: boolean
+  ): DSPosition;
+
+  /**
+   * There are two special-purpose commands provided to get the world position of an object.
+   *
+   * Note: Should be used with a camera
+   * @param cameraObject is the object to query
+   * @param isLeftHanded  optional parameter (default is false to match the handedness of Digistar) and is set to true if the result is to be returned in left-handed coordinates.
+   * @returns worldPosWithOffset is the multiple-component result (worldPosWithOffset.x, worldPosWithOffset.y, worldPosWithOffset.z) with an offset if the object is a camera.
+   */
+  function GetObjectWorldPositionWithOffset(
+    cameraObject: string | DSObjectIdentifier,
+    isLeftHanded?: boolean
+  ): DSPosition;
+
+  /**
+   * Set the value of an object's attribute by using a reference
+   *
+   * Note:
+   * If the attribute is to be repeatedly updated in the JavaScript, it may be more efficient to use these commands which reference an object/attribute obtained from a call to DsNewObjectAttrRef(object, attribute)
+   * @param ref the attribute reference
+   * @param value is the data used in setting the attribute. This varies with the type of the object.
+   * @param controller is an optional controller to use when setting the attribute
+   */
+  function SetObjectAttrUsingRef(
+    ref: DSAttributeReference,
+    value: any,
+    controller?: DSController
+  ): void;
+
+  /**
+   * Set the value of an object's attribute by using an object and the attrbute name
+   *
+   * Note: If you only set the attribute once or a few times in your script, then using a reference
+   * would be less efficient than calling Ds.SetObjectAttr(object, attribute, value). If you are going
+   * to access the attribute repeatedly, then it is recommended that you use a reference.
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param attrName the attribute name
+   * @param value is the data used in setting the attribute. This varies with the type of the object.
+   * @param controller is an optional controller to use when setting the attribute
+   */
+  function SetObjectAttr(
+    object: string | DSObjectIdentifier,
+    attrName: string,
+    value: any,
+    controller?: DSController
+  ): void;
+
+  /**
+   * Set a single array element value for an object's attribute by using a reference
+   *
+   * Note:
+   * If the attribute is to be repeatedly updated in the JavaScript, it may be more efficient to use these commands which reference an object/attribute obtained from a call to DsNewObjectAttrRef(object, attribute)
+   * @param ref the attribute reference
+   * @param elemIndex the array element index
+   * @param value is the data used in setting the attribute. This varies with the type of the object.
+   * @param controller is an optional controller to use when setting the attribute
+   */
+  function SetObjectArrayElemUsingRef(
+    ref: DSAttributeReference,
+    elemIndex: number,
+    value: any,
+    controller?: DSController
+  ): void;
+
+  /**
+   * Set a single array element value for an object's attribute by using an object and the attrbute name
+   *
+   * Note: If you only set the attribute once or a few times in your script, then using a reference
+   * would be less efficient than calling Ds.SetObjectAttr(object, attribute, value). If you are going
+   * to access the attribute repeatedly, then it is recommended that you use a reference.
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param attrName the attribute name
+   * @param elemIndex the array element index
+   * @param value is the data used in setting the attribute. This varies with the type of the object.
+   * @param controller is an optional controller to use when setting the attribute
+   */
+  function SetObjectArrayElem(
+    object: string | DSObjectIdentifier,
+    attrName: string,
+    elemIndex: number,
+    value: any,
+    controller?: DSController
+  ): void;
 }
 
 /**
