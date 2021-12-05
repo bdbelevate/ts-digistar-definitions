@@ -638,6 +638,324 @@ declare namespace Ds {
     className: string,
     index: number
   ): string;
+
+  interface SceneClass {
+    tbd: string;
+  }
+
+  enum DrawMode {
+    Distant = 'distant',
+    Normal = 'normal',
+    Fixed = 'fixed',
+    Landscape = 'landscape',
+    Near = 'near',
+  }
+
+  /**
+   * Add an object to the scene.
+   *
+   * @param sceneObject is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param objectName is the name of the Digistar object to add to the scene
+   * @param drawMode is the draw mode and is one of "distant", "normal", "fixed", "landscape", or "near"
+   */
+  function SceneAddObject(
+    sceneObject: SceneClass | null,
+    objectName: string,
+    drawMode: DrawMode
+  );
+
+  /**
+   * Add an object to the scene before another object.
+   *
+   * @param sceneObject is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param objectName is the name of the Digistar object to add to the scene
+   * @param beforeName is the name of the object to add object before. If beforeName is "all" then object is added before all other objects.
+   * @param drawMode is the draw mode and is one of "distant", "normal", "fixed", "landscape", or "near"
+   */
+  function SceneAddObjectBefore(
+    sceneObject: SceneClass | null,
+    objectName: string,
+    beforeName: string | 'all',
+    drawMode: DrawMode
+  );
+
+  /**
+   * Add an object to the scene after another object.
+   *
+   * @param sceneObject is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param objectName is the name of the Digistar object to add to the scene
+   * @param afterName is the name of the object to add object after. If afterName is "all" then object is added before all other objects.
+   * @param drawMode is the draw mode and is one of "distant", "normal", "fixed", "landscape", or "near"
+   */
+  function SceneAddObjectAfter(
+    sceneObject: SceneClass | null,
+    objectName: string,
+    afterName: string | 'all',
+    drawMode: DrawMode
+  );
+
+  /**
+   * Removes an object from the scene.
+   * @param sceneObject  is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param objectName is the name of the Digistar object to remove from the scene
+   */
+  function SceneRemoveObject(
+    sceneObject: SceneClass | null,
+    objectName: string
+  ): void;
+
+  /**
+   * Sets the scene date to the current date and time.
+   *
+   * @param sceneObject is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param controller is an optional controller to use with the command.
+   */
+  function SceneDateNow(
+    sceneObject: SceneClass | null,
+    controller?: string | number
+  ): void;
+
+  /**
+   * Sets the scene date to the current date and time.
+   *
+   * @param sceneObject is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param controller is an optional controller to use with the command.
+   */
+  function SceneDateNow(
+    sceneObject: SceneClass | null,
+    controller?: string | number
+  ): void;
+
+  /**
+   * Sets the date to a specified date offset from today
+   *
+   * @param sceneObject is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param hourOffset is an integral number to offset the date value.
+   * @param dayOffset in an integral number of days to offset the date value.
+   * @param controller is an optional controller to use with the command.
+   */
+  function SceneDateToday(
+    sceneObject: SceneClass | null,
+    hourOffset?: number,
+    dayOffset?: number,
+    controller?: string | number
+  ): void;
+
+  /**
+   * Sets the date to a specified date offset from today's sunrise time
+   *
+   * @param sceneObject is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param offset is an integral number to offset the date value.
+   * @param offsetType is either 'hours' or 'degrees' to specify whether the offset is to be applied as hours or degrees.
+   * @param dayOffset in an integral number of days to offset the date value.
+   * @param controller is an optional controller to use with the command.
+   */
+  function SceneDateTodaySunrise(
+    sceneObject: SceneClass | null,
+    offset?: number,
+    offsetType?: 'hours' | 'degrees',
+    dayOffset?: number,
+    controller?: string | number
+  ): void;
+
+  /**
+   * Sets the date to a specified date offset from today's sunset
+   *
+   * @param sceneObject is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param offset is an integral number to offset the date value.
+   * @param offsetType is either 'hours' or 'degrees' to specify whether the offset is to be applied as hours or degrees.
+   * @param dayOffset in an integral number of days to offset the date value.
+   * @param controller is an optional controller to use with the command.
+   */
+  function SceneDateTodaySunset(
+    sceneObject: SceneClass | null,
+    offset?: number,
+    offsetType?: 'hours' | 'degrees',
+    dayOffset?: number,
+    controller?: string | number
+  ): void;
+
+  /**
+   * Sets the date to a specified date offset from today's transit
+   *
+   * @param sceneObject is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param offset is an integral number to offset the date value.
+   * @param offsetType is either 'hours' or 'degrees' to specify whether the offset is to be applied as hours or degrees.
+   * @param dayOffset in an integral number of days to offset the date value.
+   * @param controller is an optional controller to use with the command.
+   */
+  function SceneDateTodayTransit(
+    sceneObject: SceneClass | null,
+    offset?: number,
+    offsetType?: 'hours' | 'degrees',
+    dayOffset?: number,
+    controller?: string | number
+  ): void;
+
+  /**
+   * Sets the date to a specific date and time
+   *
+   * @param sceneObject is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param year specify the year
+   * @param month specify the month
+   * @param day specify the year
+   * @param hour specify the year
+   * @param minute specify the year
+   * @param second specify the year
+   * @param local is true for local time or false for UT.
+   * @param controller is an optional controller to use with the command.
+   */
+  function SceneDate(
+    sceneObject: SceneClass | null,
+    year: number,
+    month: number,
+    day: number,
+    hour: number,
+    minute: number,
+    second: number,
+    local: boolean,
+    controller?: string | number
+  ): void;
+
+  /**
+   * Sets the date to an offset from a specified date's sunrise time
+   *
+   * @param sceneObject is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param year specify the year
+   * @param month specify the month
+   * @param day specify the year
+   * @param offset is an integral number to offset the date value.
+   * @param offsetType is either 'hours' or 'degrees' to specify whether the offset is to be applied as hours or degrees.
+   * @param controller is an optional controller to use with the command.
+   */
+  function SceneDateSunrise(
+    sceneObject: SceneClass | null,
+    year: number,
+    month: number,
+    day: number,
+    offset?: number,
+    offsetType?: 'hours' | 'degrees',
+    controller?: string | number
+  ): void;
+
+  /**
+   * Sets the date to an offset from a specified date's sunset time
+   *
+   * @param sceneObject is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param year specify the year
+   * @param month specify the month
+   * @param day specify the year
+   * @param offset is an integral number to offset the date value.
+   * @param offsetType is either 'hours' or 'degrees' to specify whether the offset is to be applied as hours or degrees.
+   * @param controller is an optional controller to use with the command.
+   */
+  function SceneDateSunset(
+    sceneObject: SceneClass | null,
+    year: number,
+    month: number,
+    day: number,
+    offset?: number,
+    offsetType?: 'hours' | 'degrees',
+    controller?: string | number
+  ): void;
+
+  /**
+   * Sets the date to an offset from a specified date's transit time
+   *
+   * @param sceneObject is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param year specify the year
+   * @param month specify the month
+   * @param day specify the year
+   * @param offset is an integral number to offset the date value.
+   * @param offsetType is either 'hours' or 'degrees' to specify whether the offset is to be applied as hours or degrees.
+   * @param controller is an optional controller to use with the command.
+   */
+  function SceneDateTransit(
+    sceneObject: SceneClass | null,
+    year: number,
+    month: number,
+    day: number,
+    offset?: number,
+    offsetType?: 'hours' | 'degrees',
+    controller?: string | number
+  ): void;
+
+  /**
+   * Set the scene date rate
+   *
+   * @param sceneObject is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param value is the date rate, step, or relative value with units specified by unit.
+   * @param unit is one of seconds, minutes, hours, sdays (sidereal days), days, smonths (sidereal months), cmonths (calendar months), months, syears (sidereal years), cyears (calendar years), or years.
+   * @param relative is true if the date rate is to be set relative to the current rate.
+   * @param controller is an optional controller to use with the command.
+   */
+  function SceneDateRate(
+    sceneObject: SceneClass | null,
+    value: number,
+    unit:
+      | 'seconds'
+      | 'minutes'
+      | 'sdays'
+      | 'days'
+      | 'smonths'
+      | 'cmonths'
+      | 'months'
+      | 'syears'
+      | 'cyears'
+      | 'years',
+    relative?: boolean,
+    controller?: string | number
+  );
+
+  /**
+   * Set the scene date rate step
+   *
+   * @param sceneObject is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param value is the date rate, step, or relative value with units specified by unit.
+   * @param unit is one of seconds, minutes, hours, sdays (sidereal days), days, smonths (sidereal months), cmonths (calendar months), months, syears (sidereal years), cyears (calendar years), or years.
+   * @param controller is an optional controller to use with the command.
+   */
+  function SceneDateRateStep(
+    sceneObject: SceneClass | null,
+    value: number,
+    unit:
+      | 'seconds'
+      | 'minutes'
+      | 'sdays'
+      | 'days'
+      | 'smonths'
+      | 'cmonths'
+      | 'months'
+      | 'syears'
+      | 'cyears'
+      | 'years',
+    controller?: string | number
+  );
+
+  /**
+   * Set the scene date rate relative
+   *
+   * @param sceneObject is an object of type SceneClass. If not specified, the standard scene object will be used. Note that making this an optional parameter can lead to confusion. In new scripts, please specify either 'scene' or null if the standard scene object is to be used.
+   * @param value is the date rate, step, or relative value with units specified by unit.
+   * @param unit is one of seconds, minutes, hours, sdays (sidereal days), days, smonths (sidereal months), cmonths (calendar months), months, syears (sidereal years), cyears (calendar years), or years.
+   * @param controller is an optional controller to use with the command.
+   */
+  function SceneDateRateRelative(
+    sceneObject: SceneClass | null,
+    value: number,
+    unit:
+      | 'seconds'
+      | 'minutes'
+      | 'sdays'
+      | 'days'
+      | 'smonths'
+      | 'cmonths'
+      | 'months'
+      | 'syears'
+      | 'cyears'
+      | 'years',
+    controller?: string | number
+  );
 }
 
 /**
