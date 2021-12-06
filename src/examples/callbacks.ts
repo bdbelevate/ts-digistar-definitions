@@ -41,3 +41,5 @@ Ds.AddObjectAttrCallback('eye', 'attitude', b);
 Ds.AddObjectCommandCallback('stars', 'on', c);
 
 Ds.WaitForCallback();
+
+export {};

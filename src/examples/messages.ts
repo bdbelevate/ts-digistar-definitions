@@ -1,8 +1,10 @@
-const MESSAGE_TEST = true;
-while (MESSAGE_TEST) {
+const test = true;
+while (test) {
   if (Ds.GetMessage() == 'quit') break;
 
   print('waiting');
 
   Ds.Wait(1.0);
 }
+
+export {};

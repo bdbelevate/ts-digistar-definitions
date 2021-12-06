@@ -7,3 +7,5 @@ const result = Ds.PopupMessage(
 );
 
 if (result == 7) console.log('result', result);
+
+export {};

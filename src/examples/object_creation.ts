@@ -20,3 +20,5 @@ if (Ds.GetObjectID('timecode') < 0) {
 
   Ds.SceneAddObject(null, 'timecode');
 }
+
+export {};

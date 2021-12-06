@@ -16,8 +16,8 @@ const playEnumIndex = Ds.GetEnumItemIndex('showStatusEnum', 'playing');
 
 const stopEnumIndex = Ds.GetEnumItemIndex('showStatusEnum', 'stopped');
 
-const SHOWTIME_TEST = true;
-while (SHOWTIME_TEST) {
+const test = true;
+while (test) {
   // loop while the show is not playing
 
   print('waiting for show to begin');
@@ -119,3 +119,5 @@ while (SHOWTIME_TEST) {
 }
 
 print('exiting...');
+
+export {};
