@@ -990,10 +990,13 @@ declare namespace Ds {
    */
   function GetEnumItemName(enumName: string, index: number): string;
 
-  interface DSObjectIdentifier {
-    objectID: number;
-    classID: number;
-  }
+  type DSObjectIdentifier =
+    | {
+        objectID: number;
+        classID: number;
+      }
+    | string
+    | number;
 
   // TODO: figure out the type
   type DSAttributeReference = {
@@ -1007,7 +1010,7 @@ declare namespace Ds {
    * @param attrName is the name of the object attribute or, if the attribute index is known, it can be the numeric value of the index.
    */
   function NewObjectAttrRef(
-    object: string | DSObjectIdentifier,
+    object: DSObjectIdentifier,
     attrName: string | number
   ): DSAttributeReference;
 
@@ -1067,10 +1070,7 @@ declare namespace Ds {
    * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
    * @param attrName the attribute name
    */
-  function GetObjectAttr(
-    object: string | DSObjectIdentifier,
-    attrName: string
-  ): any;
+  function GetObjectAttr(object: DSObjectIdentifier, attrName: string): any;
 
   /**
    * Returns the value of an array element by using a reference
@@ -1103,7 +1103,7 @@ declare namespace Ds {
    * @param elemIndex the index of the array element
    */
   function GetObjectArrayElem(
-    object: string | DSObjectIdentifier,
+    object: DSObjectIdentifier,
     attrName: string,
     elemIndex: number
   ): any;
@@ -1125,7 +1125,7 @@ declare namespace Ds {
    * @returns worldPos is the multiple-component result (worldPos.x, worldPos.y, worldPos.z).
    */
   function GetObjectWorldPosition(
-    object: string | DSObjectIdentifier,
+    object: DSObjectIdentifier,
     isLeftHanded?: boolean
   ): DSPosition;
 
@@ -1138,7 +1138,7 @@ declare namespace Ds {
    * @returns worldPosWithOffset is the multiple-component result (worldPosWithOffset.x, worldPosWithOffset.y, worldPosWithOffset.z) with an offset if the object is a camera.
    */
   function GetObjectWorldPositionWithOffset(
-    cameraObject: string | DSObjectIdentifier,
+    cameraobject: DSObjectIdentifier,
     isLeftHanded?: boolean
   ): DSPosition;
 
@@ -1169,7 +1169,7 @@ declare namespace Ds {
    * @param controller is an optional controller to use when setting the attribute
    */
   function SetObjectAttr(
-    object: string | DSObjectIdentifier,
+    object: DSObjectIdentifier,
     attrName: string,
     value: any,
     controller?: DSController
@@ -1205,7 +1205,7 @@ declare namespace Ds {
    * @param controller is an optional controller to use when setting the attribute
    */
   function SetObjectArrayElem(
-    object: string | DSObjectIdentifier,
+    object: DSObjectIdentifier,
     attrName: string,
     elemIndex: number,
     value: any,
@@ -1224,7 +1224,7 @@ declare namespace Ds {
    * @param attrName the attribute name
    */
   function ResetObjectAttrUsingRef(
-    object: string | DSObjectIdentifier,
+    object: DSObjectIdentifier,
     attrName: string
   ): void;
 
@@ -1238,7 +1238,7 @@ declare namespace Ds {
    * @param elemIndex the array element index
    */
   function ResetObjectArrayElemUsingRef(
-    object: string | DSObjectIdentifier,
+    object: DSObjectIdentifier,
     attrName: string,
     elemIndex: number
   ): void;
@@ -1298,7 +1298,7 @@ declare namespace Ds {
    * @param commandName is the name of the object command or, if the command index is known, it can be the numeric value of the index.
    */
   function NewObjectCommandRef(
-    object: string | DSObjectIdentifier,
+    object: DSObjectIdentifier,
     commandName: string | number
   ): DSAttributeReference;
 
@@ -1326,7 +1326,7 @@ declare namespace Ds {
    * @param commandName is the name of the object command or, if the command index is known, it can be the numeric value of the index.
    */
   function ExecuteObjectCommand(
-    object: string | DSObjectIdentifier,
+    object: DSObjectIdentifier,
     commandName: string
   ): void;
 
@@ -1373,7 +1373,7 @@ declare namespace Ds {
    * @param attrName the attribute name
    */
   function AddObjectAttrEvent(
-    object: string | DSObjectIdentifier,
+    object: DSObjectIdentifier,
     attrName: string
   ): void;
 
@@ -1390,7 +1390,7 @@ declare namespace Ds {
    * @param attrName the command name
    */
   function AddObjectCommandEvent(
-    object: string | DSObjectIdentifier,
+    object: DSObjectIdentifier,
     commandName: string
   ): void;
 
@@ -1422,7 +1422,7 @@ declare namespace Ds {
    * @param attrName the command name
    */
   function AddObjectActionEvent(
-    object: string | DSObjectIdentifier,
+    object: DSObjectIdentifier,
     action: DSActionEvent
   ): void;
 
@@ -1461,7 +1461,7 @@ declare namespace Ds {
    * @param attrName the attribute name
    */
   function RemoveObjectAttrEvent(
-    object: string | DSObjectIdentifier,
+    object: DSObjectIdentifier,
     attrName: string
   ): void;
 
@@ -1472,7 +1472,7 @@ declare namespace Ds {
    * @param attrName the command name
    */
   function RemoveObjectCommandEvent(
-    object: string | DSObjectIdentifier,
+    object: DSObjectIdentifier,
     commandName: string
   ): void;
 
@@ -1483,7 +1483,7 @@ declare namespace Ds {
    * @param attrName the command name
    */
   function RemoveObjectActionEvent(
-    object: string | DSObjectIdentifier,
+    object: DSObjectIdentifier,
     action: DSActionEvent
   ): void;
 
@@ -1576,6 +1576,81 @@ declare namespace Ds {
    * @param ref a reference to a Digistar object that is used to monitor change actions.
    */
   function GetObjectRefAction(ref: DSObjectRef): string;
+
+  type CallBackFunction = (
+    object: DSObjectIdentifier,
+    attrName: string,
+    elemIndex?: number
+  ) => void;
+
+  /**
+   * Setup to call a JavaScript function when the specified attribute of an object changes.
+   *
+   * Callbacks can be used to monitor changes to a Digistar attribute or when a Digistar command
+   * is executed.
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param attrName is the name of the object attribute or, if the attribute index is known, it can be the numeric value of the index.
+   * @param func is the function to be called
+   */
+  function AddObjectAttrCallback(
+    object: DSObjectIdentifier,
+    attrName: string,
+    func: CallBackFunction
+  ): void;
+
+  /**
+   * Setup a call to a JavaScript function when the specified command of an object is executed.
+   *
+   * Callbacks can be used to monitor changes to a Digistar attribute or when a Digistar command
+   * is executed.
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param commandName is the name of the object command or, if the command index is known, it can be the numeric value of the index.
+   * @param func is the function to be called
+   */
+  function AddObjectCommandCallback(
+    object: DSObjectIdentifier,
+    commandName: string,
+    func: CallBackFunction
+  ): void;
+
+  /**
+   * Remove a callback when the specified attribute of an object changes.
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param attrName is the name of the object attribute or, if the attribute index is known, it can be the numeric value of the index.
+   */
+  function RemoveObjectAttrCallback(
+    object: DSObjectIdentifier,
+    attrName: string
+  ): void;
+
+  /**
+   * Remove a callback when the specified command of an object is executed.
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param commandName is the name of the object command or, if the command index is known, it can be the numeric value of the index.
+   */
+  function RemoveObjectCommandCallback(
+    object: DSObjectIdentifier,
+    commandName: string
+  ): void;
+
+  /**
+   * Remove all callbacks to javascript
+   */
+  function CancelCallback(): void;
+
+  /**
+   * Besides waiting for elapsed time a JavaScript can also wait for an object or attribute callback.
+   *
+   * Note:
+   * Once you have called Ds.WaitForCallback(), your JavaScript will be paused and waiting.
+   * No commands in the JavaScript will be processed until a callback occurs. You can stop
+   * the JavaScript which will cancel all callbacks.
+   */
+  function WaitForCallback(): void;
 }
 
 /**
