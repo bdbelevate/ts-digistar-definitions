@@ -1,5 +1,5 @@
 {
-  "name": "digistar-test",
+  "name": "ts-digistar-definitions",
   "version": "1.0.0",
   "description": "This package has some libraries to help with Digistar development",
   "scripts": {

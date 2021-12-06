@@ -1353,6 +1353,129 @@ declare namespace Ds {
    * @param ref the object command reference
    */
   function GetCommandRefIndexName(ref: DSCommandReference): string;
+
+  /**
+   * Setup an event for a specific object and attribute
+   *
+   * Example:
+   * ```js
+   * // Set object attr event to trigger when the scene date changes
+   * Ds.AddObjectAttrEvent('scene', 'date');
+   * ```
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param attrName the attribute name
+   */
+  function AddObjectAttrEvent(
+    object: string | DSObjectIdentifier,
+    attrName: string
+  ): void;
+
+  /**
+   * Setup an event for a specific object and command
+   *
+   * Example:
+   * ```js
+   * // Set a command event to trigger when myObject is reset
+   * Ds.AddObjectCommandEvent('myObject', 'reset');
+   * ```
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param attrName the command name
+   */
+  function AddObjectCommandEvent(
+    object: string | DSObjectIdentifier,
+    commandName: string
+  ): void;
+
+  type DSActionEvent =
+    | 'PostCreate'
+    | 'PreDelete'
+    | 'PostDelete'
+    | 'PreInit'
+    | 'PostInit'
+    | 'PreReset'
+    | 'PostReset'
+    | 'AddChild'
+    | 'RemoveChild';
+
+  /**
+   * Setup an event for a specific object and action
+   *
+   * Example:
+   * ```js
+   * // Set a command event to trigger when myObject is reset
+   * Ds.AddObjectCommandEvent('myObject', 'reset');
+   * ```
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param attrName the command name
+   */
+  function AddObjectActionEvent(
+    object: string | DSObjectIdentifier,
+    action: DSActionEvent
+  ): void;
+
+  // TODO: figure out what this is
+  interface DSNotificationReference {
+    tbd: string;
+  }
+
+  /**
+   * Setup an event to listen for trigger of an event when data is received from an I/O object
+   * @param notificationRef - the reference to listen for data on
+   */
+  function AddNotificationEvent(notificationRef: DSNotificationReference): void;
+
+  /**
+   * Set an event for a specific timer
+   *
+   * @param timeInSeconds - the amount of time until an event is triggered
+   * @param clock specifies which clock to use for waiting
+   */
+  function SetTimerEvent(
+    timeInSeconds: number,
+    clock: 'cpu' | 'system' | 'show'
+  ): void;
+
+  // TODO: not sure how this works
+  /**
+   * Listen for a message
+   */
+  function SetMessageEvent(): void;
+
+  /**
+   * Removes an event for a specific object and attribute
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param attrName the attribute name
+   */
+  function RemoveObjectAttrEvent(
+    object: string | DSObjectIdentifier,
+    attrName: string
+  ): void;
+
+  /**
+   * Removes an event for a specific object and command
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param attrName the command name
+   */
+  function RemoveObjectCommandEvent(
+    object: string | DSObjectIdentifier,
+    commandName: string
+  ): void;
+
+  /**
+   * Removes an event for a specific object and action
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param attrName the command name
+   */
+  function RemoveObjectActionEvent(
+    object: string | DSObjectIdentifier,
+    action: DSActionEvent
+  ): void;
 }
 
 /**
