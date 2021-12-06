@@ -718,7 +718,7 @@ declare namespace Ds {
    */
   function SceneDateNow(
     sceneObject: SceneClass | null,
-    controller?: DSController
+    controller?: DSController | null
   ): void;
 
   /**
@@ -729,7 +729,7 @@ declare namespace Ds {
    */
   function SceneDateNow(
     sceneObject: SceneClass | null,
-    controller?: DSController
+    controller?: DSController | null
   ): void;
 
   /**
@@ -744,7 +744,7 @@ declare namespace Ds {
     sceneObject: SceneClass | null,
     hourOffset?: number,
     dayOffset?: number,
-    controller?: DSController
+    controller?: DSController | null
   ): void;
 
   /**
@@ -761,7 +761,7 @@ declare namespace Ds {
     offset?: number,
     offsetType?: 'hours' | 'degrees',
     dayOffset?: number,
-    controller?: DSController
+    controller?: DSController | null
   ): void;
 
   /**
@@ -778,7 +778,7 @@ declare namespace Ds {
     offset?: number,
     offsetType?: 'hours' | 'degrees',
     dayOffset?: number,
-    controller?: DSController
+    controller?: DSController | null
   ): void;
 
   /**
@@ -795,7 +795,7 @@ declare namespace Ds {
     offset?: number,
     offsetType?: 'hours' | 'degrees',
     dayOffset?: number,
-    controller?: DSController
+    controller?: DSController | null
   ): void;
 
   /**
@@ -820,7 +820,7 @@ declare namespace Ds {
     minute: number,
     second: number,
     local: boolean,
-    controller?: DSController
+    controller?: DSController | null
   ): void;
 
   /**
@@ -841,7 +841,7 @@ declare namespace Ds {
     day: number,
     offset?: number,
     offsetType?: 'hours' | 'degrees',
-    controller?: DSController
+    controller?: DSController | null
   ): void;
 
   /**
@@ -862,7 +862,7 @@ declare namespace Ds {
     day: number,
     offset?: number,
     offsetType?: 'hours' | 'degrees',
-    controller?: DSController
+    controller?: DSController | null
   ): void;
 
   /**
@@ -883,7 +883,7 @@ declare namespace Ds {
     day: number,
     offset?: number,
     offsetType?: 'hours' | 'degrees',
-    controller?: DSController
+    controller?: DSController | null
   ): void;
 
   /**
@@ -910,7 +910,7 @@ declare namespace Ds {
       | 'cyears'
       | 'years',
     relative?: boolean,
-    controller?: DSController
+    controller?: DSController | null
   );
 
   /**
@@ -935,7 +935,7 @@ declare namespace Ds {
       | 'syears'
       | 'cyears'
       | 'years',
-    controller?: DSController
+    controller?: DSController | null
   );
 
   /**
@@ -960,7 +960,7 @@ declare namespace Ds {
       | 'syears'
       | 'cyears'
       | 'years',
-    controller?: DSController
+    controller?: DSController | null
   );
 
   /**
@@ -1115,6 +1115,8 @@ declare namespace Ds {
     x: number;
     y: number;
     z: number;
+    mode?: string;
+    units?: string;
   };
 
   /**
@@ -1154,7 +1156,7 @@ declare namespace Ds {
   function SetObjectAttrUsingRef(
     ref: DSAttributeReference,
     value: any,
-    controller?: DSController
+    controller?: DSController | null
   ): void;
 
   /**
@@ -1172,7 +1174,7 @@ declare namespace Ds {
     object: DSObjectIdentifier,
     attrName: string,
     value: any,
-    controller?: DSController
+    controller?: DSController | null
   ): void;
 
   /**
@@ -1189,7 +1191,7 @@ declare namespace Ds {
     ref: DSAttributeReference,
     elemIndex: number,
     value: any,
-    controller?: DSController
+    controller?: DSController | null
   ): void;
 
   /**
@@ -1209,7 +1211,7 @@ declare namespace Ds {
     attrName: string,
     elemIndex: number,
     value: any,
-    controller?: DSController
+    controller?: DSController | null
   ): void;
 
   /**
@@ -1659,6 +1661,95 @@ declare namespace Ds {
    * @returns is the string variable to receive the formatted time (hh:mm:ss.ff).
    */
   function TimeToStr(timeInSeconds: number): string;
+
+  /**
+   * Given an object ID and an attribute, this function returns the name of a controlInformationClass object that can be queried to determine if and which controller is acting on an attribute of the object.
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param attrName is the name of the object attribute or, if the attribute index is known, it can be the numeric value of the index.
+   */
+  function GetControlInfoObject(
+    object: DSObjectIdentifier,
+    attrName: string
+  ): DSObjectIdentifier;
+
+  interface LocationInfo {
+    /**
+     * the name of the body and if "null" the location information is NOT valid
+     */
+    body: string | null;
+    /**
+     * a boolean flag which is true if the information pertains to a view location
+     */
+    viewLocation: boolean;
+    /**
+     * a boolean flag which is true if annual mode is on
+     */
+    annualMode: boolean;
+    /**
+     * the location altitude value
+     */
+    altitude: number;
+    /**
+     * the location azimuth angle in degrees
+     */
+    azimuth: number;
+    /**
+     * the location latitude in degrees
+     */
+    latitude: number;
+    /**
+     * the location longitude in degrees
+     */
+    longitude: number;
+    /**
+     * the pitch angle in degrees
+     */
+    pitch: number;
+  }
+  /**
+   * Given an object name, this function returns a set of information about the object's current location or view location.
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   */
+  function GetObjectLocationInfo(object: DSObjectIdentifier): LocationInfo;
+
+  /**
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param faceObject is the name of the object to be faced
+   * @param axis  is the specified axis to face
+   * @param setRoll is true or false indicating whether to set the roll angle
+   * @param rollAngle is the roll angle to use in degrees
+   * @param controller is an optional controller to use with the command.
+   */
+  function ObjectFaceObject(
+    object: DSObjectIdentifier,
+    faceObject: DSObjectIdentifier,
+    axis?: '+x' | '-x' | '+y' | '-y' | '+z' | '-z',
+    setRoll?: boolean,
+    rollAngle?: number,
+    controller?: DSController | null
+  );
+
+  /**
+   * This function is used to start a FACE POSITION controller for the object specified.
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param position is a JavaScript object with three double components (.x, .y, .z, and optionally mode, and units).
+   * @param axis  is the specified axis to face
+   * @param setRoll is true or false indicating whether to set the roll angle
+   * @param rollAngle is the roll angle to use in degrees
+   * @param controller is an optional controller to use with the command.
+   */
+  function ObjectFacePosition(
+    object: DSObjectIdentifier,
+    position: DSPosition,
+    axis?: '+x' | '-x' | '+y' | '-y' | '+z' | '-z',
+    setRoll?: boolean,
+    rollAngle?: number,
+    controller?: DSController | null
+  );
 }
 
 /**
