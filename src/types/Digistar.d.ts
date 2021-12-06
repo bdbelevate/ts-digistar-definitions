@@ -1405,6 +1405,10 @@ declare namespace Ds {
     | 'AddChild'
     | 'RemoveChild';
 
+  // TODO: figure out the type
+  interface DSObjectRef {
+    tbd: string;
+  }
   /**
    * Setup an event for a specific object and action
    *
@@ -1543,6 +1547,35 @@ declare namespace Ds {
    * @param event the event object to evaluate
    */
   function GetEventObjectType(event: DSEventObject): string;
+
+  /**
+   * Used to get components - actionObjID is the object ID of the object acted upon
+   *
+   * @param ref a reference to a Digistar object that is used to monitor change actions.
+   */
+  function GetObjectRefActionObjectID(ref: DSObjectRef): number;
+
+  /**
+   * Used to get the object ID to be monitored and -1 if any object
+   *
+   * @param ref a reference to a Digistar object that is used to monitor change actions.
+   */
+  function GetObjectRefObjectID(ref: DSObjectRef): number;
+
+  /**
+   * Used to get the object ID of the child for AddChild or RemoveChild actions
+   *
+   * @param ref a reference to a Digistar object that is used to monitor change actions.
+   */
+  function GetObjectRefChildID(ref: DSObjectRef): number;
+
+  /**
+   * Used to get the action that took place in the event and will be text
+   * listing one of the possible object actions
+   *
+   * @param ref a reference to a Digistar object that is used to monitor change actions.
+   */
+  function GetObjectRefAction(ref: DSObjectRef): string;
 }
 
 /**
