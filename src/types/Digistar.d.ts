@@ -1008,7 +1008,7 @@ declare namespace Ds {
    */
   function NewObjectAttrRef(
     object: string | DSObjectIdentifier,
-    attrName
+    attrName: string | number
   ): DSAttributeReference;
 
   /**
@@ -1211,6 +1211,148 @@ declare namespace Ds {
     value: any,
     controller?: DSController
   ): void;
+
+  /**
+   * Resetting an object attribute sets the value to its default.
+   * @param ref the attribute reference
+   */
+  function ResetObjectAttrUsingRef(ref: DSAttributeReference): void;
+
+  /**
+   * Resetting an object attribute sets the value to its default.
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param attrName the attribute name
+   */
+  function ResetObjectAttrUsingRef(
+    object: string | DSObjectIdentifier,
+    attrName: string
+  ): void;
+
+  /**
+   * @deprecated
+   *
+   * Resetting a object attribute or array element is something that is rarely done. For that reason, going to the trouble of using a reference is not recommended unless you already have the reference for getting or setting the attribute.
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param attrName the attribute name
+   * @param elemIndex the array element index
+   */
+  function ResetObjectArrayElemUsingRef(
+    object: string | DSObjectIdentifier,
+    attrName: string,
+    elemIndex: number
+  ): void;
+
+  /**
+   * Returns the default values for a specified attribute
+   *
+   * Note:
+   * The commands to get a class attribute default value are quite simple, but beneath the surface,
+   * a specialized function is called for each class attribute type. For that reason, the return
+   * value will differ depending on the attribute type. For example, when getting the “cameraClass”
+   * “position” attribute default, the returned value will be an object with an ‘x’, a ‘y’, and a
+   * ‘z’ component. Getting the “compositionClass” “color” attribute will return an object with an ‘r’, a ‘g’, and a ‘b’ component. Getting the “compositionClass” “intensity” attribute will return a value between 0 and 100.
+   *
+   * @param className is the name of the class to query an attribute default value.
+   * @param attrName is the name of the attribute.
+   */
+  function GetClassAttrDefault(className: string, attrName: string): any;
+
+  /**
+   * Returns the minimum values for a specified attribute
+   *
+   * The commands to get a class attribute default value are quite simple, but beneath the surface,
+   * a specialized function is called for each class attribute type. For that reason, the return
+   * value will differ depending on the attribute type. For example, when getting the “cameraClass”
+   * “position” attribute default, the returned value will be an object with an ‘x’, a ‘y’, and a
+   * ‘z’ component. Getting the “compositionClass” “color” attribute will return an object with an ‘r’, a ‘g’, and a ‘b’ component. Getting the “compositionClass” “intensity” attribute will return a value between 0 and 100.
+   *
+   * @param className is the name of the class to query an attribute default value.
+   * @param attrName is the name of the attribute.
+   */
+  function GetClassAttrMin(className: string, attrName: string): any;
+
+  /**
+   * Returns the maximum values for a specified attribute
+   *
+   * The commands to get a class attribute default value are quite simple, but beneath the surface,
+   * a specialized function is called for each class attribute type. For that reason, the return
+   * value will differ depending on the attribute type. For example, when getting the “cameraClass”
+   * “position” attribute default, the returned value will be an object with an ‘x’, a ‘y’, and a
+   * ‘z’ component. Getting the “compositionClass” “color” attribute will return an object with an ‘r’, a ‘g’, and a ‘b’ component. Getting the “compositionClass” “intensity” attribute will return a value between 0 and 100.
+   *
+   * @param className is the name of the class to query an attribute default value.
+   * @param attrName is the name of the attribute.
+   */
+  function GetClassAttrMax(className: string, attrName: string): any;
+
+  // TODO: figure out the type
+  type DSCommandReference = {
+    tbd: string;
+  };
+
+  /**
+   * Returns a reference to an object's command.
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param commandName is the name of the object command or, if the command index is known, it can be the numeric value of the index.
+   */
+  function NewObjectCommandRef(
+    object: string | DSObjectIdentifier,
+    commandName: string | number
+  ): DSAttributeReference;
+
+  /**
+   * Executes a command by reference
+   *
+   * Objects with commands can be executed from JavaScript. This can be done either by specifying
+   * the object and attribute or using a reference. Using a object and command reference means that
+   * JavaScript does not need to look up the Object ID and command index because it has been done
+   * previously. However, due to the fact that an object command is typically called no more than
+   * once in a script, using a command reference may be more work than it is worth.
+   *
+   * Example:
+   * ```js
+   * Ds.ExecuteObjectCommand("system", "reset");
+   * ```
+   * @param ref the object command reference
+   */
+  function ExecuteObjectCommandUsingRef(ref: DSCommandReference): void;
+
+  /**
+   * Executes a command by object and name
+   *
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
+   * @param commandName is the name of the object command or, if the command index is known, it can be the numeric value of the index.
+   */
+  function ExecuteObjectCommand(
+    object: string | DSObjectIdentifier,
+    commandName: string
+  ): void;
+
+  /**
+   * Returns the referenced object ID.
+   * @param ref the object command reference
+   */
+  function GetCommandRefObjectID(ref: DSCommandReference): number;
+
+  /**
+   * Returns the referenced command index.
+   * @param ref the object command reference
+   */
+  function GetCommandRefIndex(ref: DSCommandReference): number;
+
+  /**
+   * Returns the referenced object name.
+   * @param ref the object command reference
+   */
+  function GetCommandRefObjectName(ref: DSCommandReference): string;
+
+  /**
+   * Returns the name of the referenced command name.
+   * @param ref the object command reference
+   */
+  function GetCommandRefIndexName(ref: DSCommandReference): string;
 }
 
 /**
