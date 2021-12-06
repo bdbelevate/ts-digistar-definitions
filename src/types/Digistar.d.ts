@@ -1349,6 +1349,12 @@ declare namespace Ds {
   function GetCommandRefObjectName(ref: DSCommandReference): string;
 
   /**
+   * Returns the referenced command name.
+   * @param ref the object command reference
+   */
+  function GetCommandRefCommandName(ref: DSCommandReference): string;
+
+  /**
    * Returns the name of the referenced command name.
    * @param ref the object command reference
    */
@@ -1476,6 +1482,67 @@ declare namespace Ds {
     object: string | DSObjectIdentifier,
     action: DSActionEvent
   ): void;
+
+  /**
+   * Remove an event to listen for trigger of an event when data is received from an I/O object
+   * @param notificationRef - the reference to listen for data on
+   */
+  function RemoveNotificationEvent(
+    notificationRef: DSNotificationReference
+  ): void;
+
+  /**
+   * Clears any running timers
+   */
+  function ClearTimerEvent(): void;
+
+  // TODO: not sure how this works
+  /**
+   * Remove for a message listener
+   */
+  function ClearMessageEvent(): void;
+
+  // TODO: figure out type
+  type DSEventObject = {
+    tbd: string;
+  };
+
+  /**
+   * When the Ds.WaitForEvent() command is encountered in a JavaScript, the script thread will
+   * sleep until an event occurs. The returned value is an array of objects that identify one
+   * or more events.
+   */
+  function WaitForEvent(): DSEventObject[];
+
+  enum EventObjectType {
+    DsObjectAttrRef = 'DsObjectAttrRef',
+    DsObjectCommandRef = 'DsObjectCommandRef',
+    DsObjectRef = 'DsObjectRef',
+    /**
+     * Notification Reference for a I/O events
+     */
+    NotificationRef = 'NotificationRef',
+    /**
+     * Timer interval value in seconds
+     */
+    number = 'number',
+    /**
+     * Control message received from Digistar
+     */
+    string = 'string',
+  }
+  /**
+   * Calling function Ds.GetEventObjectType(evtObject[i]) (i is the index into the array of event objects) returns a string of the type name.
+   *
+   * 'DsObjectAttrRef' - evtObject[i] is of type DsObjectAttrRef
+   * 'DsObjectCommandRef' - evtObject[i] is of type DsObjectCommandRef
+   * 'DsObjectRef' - evtObject[i] is of type DsObjectRef (see DsObjectRef for Events)
+   * 'NotificationRef' - evtObject[i] is of type NotificationRef (see NotificationRef Object for Events)
+   * 'number' - evtObject[i] is of type double (floating point) and is the timer interval value in seconds
+   * 'string' - evtObject[i] is of type string and contains the control message received from Digistar
+   * @param event the event object to evaluate
+   */
+  function GetEventObjectType(event: DSEventObject): string;
 }
 
 /**
