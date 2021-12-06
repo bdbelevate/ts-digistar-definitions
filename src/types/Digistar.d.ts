@@ -248,7 +248,7 @@ declare namespace Ds {
    * @param timeInSeconds is the time is seconds to wait.
    * @param clock specifies which clock to use for waiting
    */
-  function Wait(timeInSeconds: number, clock: 'cpu' | 'system' | 'show'): void;
+  function Wait(timeInSeconds: number, clock?: 'cpu' | 'system' | 'show'): void;
 
   /**
    * Suspend processing of a JavaScript. Checks the wait time on callbacks from the Digistar non-real-time thread.
@@ -407,7 +407,7 @@ declare namespace Ds {
    *
    * @returns the ID number of the object if it exists or -1 if it does not exist (or not yet created in the case of pre-defined system objects). This command is useful in determining if an object needs to be created.
    */
-  function GetObjectId(name: string, checkCreated?: boolean): number;
+  function GetObjectID(name: string, checkCreated?: boolean): number;
 
   /**
    * Returns a class ID
@@ -417,69 +417,69 @@ declare namespace Ds {
    *
    * @returns the ID number of the class used to create the object or -1 if it does not exist.
    */
-  function GetObjectClassId(className: string, checkCreated?: boolean): number;
+  function GetObjectClassID(className: string, checkCreated?: boolean): number;
 
   /**
    * Used to get an object name from an object ID. If the object ID is not valid, null will be returned.
    *
-   * @param objectID is the ID number of the object.
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
    */
-  function GetObjectName(objectID: number): string | null;
+  function GetObjectName(object: DSObjectIdentifier): string | null;
 
   /**
    * Returns the number of array elements for an object attribute.
    *
-   * @param objectID is the ID number of the object.
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
    */
-  function GetObjectArraySize(objectID: number): number;
+  function GetObjectArraySize(object: DSObjectIdentifier): number;
 
   /**
    * Returns the number of parents of object.
    *
-   * @param objectID is the ID number of the object.
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
    */
-  function GetObjectNumParents(objectID: number): number;
+  function GetObjectNumParents(object: DSObjectIdentifier): number;
 
   /**
    * Returns an array of names of parents of object.
    *
-   * @param objectID is the ID number of the object.
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
    */
-  function GetObjectParentNames(objectID: number): string[];
+  function GetObjectParentNames(object: DSObjectIdentifier): string[];
 
   /**
    * Returns a single parent name of object referenced by the index.
    *
-   * @param objectID is the ID number of the object.
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
    * @param index the index in the array
    */
   function GetObjectParentNameUsingIndex(
-    objectID: number,
+    object: DSObjectIdentifier,
     index: number
   ): string;
 
   /**
    * Returns the number of children of object.
    *
-   * @param objectID is the ID number of the object.
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
    */
-  function GetObjectNumChildren(objectID: number): number;
+  function GetObjectNumChildren(object: DSObjectIdentifier): number;
 
   /**
    * Returns an array of names of children of object.
    *
-   * @param objectID is the ID number of the object.
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
    */
-  function GetObjectChildNames(objectID: number): string[];
+  function GetObjectChildNames(object: DSObjectIdentifier): string[];
 
   /**
    * Returns a single child name of object referenced by the index.
    *
-   * @param objectID is the ID number of the object.
+   * @param object is the name of the Digistar object or, if the object ID and class ID numeric values are known, it can be a JavaScript object of the form { 'objectID':objectIDnumber,'classID':classIDnumber }.
    * @param index the index in the array
    */
   function GetObjectChildNameUsingIndex(
-    objectID: number,
+    object: DSObjectIdentifier,
     index: number
   ): string;
 
@@ -662,7 +662,7 @@ declare namespace Ds {
   function SceneAddObject(
     sceneObject: SceneClass | null,
     objectName: string,
-    drawMode: DrawMode
+    drawMode?: DrawMode
   );
 
   /**
@@ -677,7 +677,7 @@ declare namespace Ds {
     sceneObject: SceneClass | null,
     objectName: string,
     beforeName: string | 'all',
-    drawMode: DrawMode
+    drawMode?: DrawMode
   );
 
   /**
@@ -692,7 +692,7 @@ declare namespace Ds {
     sceneObject: SceneClass | null,
     objectName: string,
     afterName: string | 'all',
-    drawMode: DrawMode
+    drawMode?: DrawMode
   );
 
   /**
@@ -1651,6 +1651,14 @@ declare namespace Ds {
    * the JavaScript which will cancel all callbacks.
    */
   function WaitForCallback(): void;
+
+  /**
+   * Formats a time in seconds to a string in the format hh:mm:ss.ff (hours:minutes:seconds.hundredths).
+   *
+   * @param timeInSeconds is a double-precision value of the time in seconds.
+   * @returns is the string variable to receive the formatted time (hh:mm:ss.ff).
+   */
+  function TimeToStr(timeInSeconds: number): string;
 }
 
 /**
